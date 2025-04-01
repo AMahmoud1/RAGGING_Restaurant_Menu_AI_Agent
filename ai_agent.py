@@ -42,6 +42,9 @@ class AI_Agent:
         # Define llm for response generation
         self.response_llm = Ollama(model=llm_model, temperature=final_response_temp, keep_alive=keep_alive)
 
+        # Create decompose chain
+        self.decompose_chain = self.decompose_chain_creation(self.decompose_llm)
+
     def load_documents(self, path):
         """
         Load the PDF document and return the number of pages.
@@ -119,6 +122,44 @@ class AI_Agent:
         retrieved_docs = self.retriever.get_relevant_documents(query)
         contexts = [doc.page_content for doc in retrieved_docs]
         return contexts
+
+    def decompose_chain_creation(self, llm):
+        """
+        Function to decompose the original query into multiple sub-queries.
+
+        Arguments:
+            query_text: The original query text
+            decompose_chain: The decomposition chain
+
+        Returns:
+            sub_queries: The decomposed sub-queries
+        """
+        # Prompt for decomposing the original query into multiple sub-queries
+        decompose_prompt = """
+        You are an expert in retrieval-augmented generation (RAG) for restaurant AI applications. Your task is to rewrite the user's query into {num_queries} highly relevant and precise queries for optimal document retrieval.  
+
+        Enhance the queries by incorporating relevant nutritional details such as fat content, calories, ingredients, allergens, and other health-related information, if applicable. Ensure that the queries are well-structured to retrieve data from online sources, menus, and nutritional databases.  
+
+        Retain key terms from the original query while eliminating ambiguity to prevent incorrect retrieval. Ensure the queries stay focused on restaurant-related information without unnecessary generalization.  
+
+        Do not return any prefix or explanations—only the queries.  
+
+        User Query: {query}  
+
+        Generate a list of {num_queries} refined queries in the following format:  
+        1.  
+        2.  
+        3.  
+        4.  
+        """
+
+        DECOMPOSE_PROMPT = PromptTemplate.from_template(decompose_prompt)
+
+        # Define the decomposition chain
+        decompose_chain = LLMChain(
+            llm=llm, prompt=DECOMPOSE_PROMPT, callbacks=None, verbose=False
+        )
+        return decompose_chain
 
     def infer(self, query_text):
         pass
