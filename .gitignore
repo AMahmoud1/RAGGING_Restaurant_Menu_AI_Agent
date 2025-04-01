@@ -1,3 +1,6 @@
+# Ignore Faiss index files (Large File System)
+*.index
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
