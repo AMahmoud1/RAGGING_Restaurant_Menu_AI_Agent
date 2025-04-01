@@ -3,7 +3,7 @@
 # Conda venv name
 VENV_NAME="restaurant_ai_agent_venv"
 
-# Handbook PDF Path
+# Menu PDF Path
 PDF_PATH="Ujamaa-restaurant-menu.pdf"
 
 # Define model variables
@@ -11,7 +11,7 @@ LLM_MODEL="llama3.1:8b"
 
 # FAISS Settings
 FAISS_INDEX_PATH="faiss_index.index"
-FIASS_k=3  # Number of similar returned chunks
+FIASS_k=2  # Number of similar returned chunks
 
 # RAGGING Settings
 NUM_QUERIES=4
