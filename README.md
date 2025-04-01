@@ -2,7 +2,7 @@
 
 The RAGGING Restaurant Menu AI Agent is a sophisticated system designed to enhance customer interactions with restaurant menus provided in PDF format. By leveraging advanced Retrieval-Augmented Generation (RAG) techniques, this agent delivers accurate and contextually relevant responses to user inquiries about menu items, ingredients, and dietary information. The application is implemented as a web-based interface using Streamlit, facilitating seamless user engagement.​
 
-![architecture diagram](ragging_restaurant_agent_diagram.png)
+![architecture diagram](images/ragging_restaurant_agent_diagram.png)
 
 WebApp Samples:
 
