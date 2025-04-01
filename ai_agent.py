@@ -37,10 +37,14 @@ class AI_Agent:
         # refer to: https://github.com/ollama/ollama/issues/9054?utm_source=chatgpt.com
         # https://stackoverflow.com/questions/79526074/ollama-model-keep-in-memory-and-prevent-unloading-between-requests-keep-alive
         # Define llm for decomposition
-        self.decompose_llm = Ollama(model=llm_model, temperature=mqr_temp, keep_alive=keep_alive)
+        self.decompose_llm = Ollama(
+            model=llm_model, temperature=mqr_temp, keep_alive=keep_alive
+        )
 
         # Define llm for response generation
-        self.response_llm = Ollama(model=llm_model, temperature=final_response_temp, keep_alive=keep_alive)
+        self.response_llm = Ollama(
+            model=llm_model, temperature=final_response_temp, keep_alive=keep_alive
+        )
 
         # Create decompose chain
         self.decompose_chain = self.decompose_chain_creation(self.decompose_llm)
@@ -233,5 +237,5 @@ class AI_Agent:
         result = self.llm_chain.run(
             context=combined_context, question=query_text, return_only_outputs=True
         )
-        print(f"[LLM Chain] |___Response: {result}")
+        print(f"[LLM Chain] Response: {result}")
         return result
