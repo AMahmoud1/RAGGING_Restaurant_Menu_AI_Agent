@@ -201,4 +201,37 @@ class AI_Agent:
         return llm_chain
 
     def infer(self, query_text):
-        pass
+        """
+        Function to process the original query and generate a single RAG response.
+
+        Arguments:
+            query_text (Str or List): The original query text
+
+        Returns:
+            result: The generated RAG response
+        """
+        # Step 1: Decompose the original query into sub-queries
+        sub_queries = self.decompose_chain.run(
+            query=query_text, num_queries=self.num_queries, return_only_outputs=True
+        )
+        sub_queries = sub_queries.strip().split(
+            "\n"
+        )  # Assuming sub-queries are separated by newlines
+        sub_queries.append(query_text)  # Add the original query to the list
+
+        # Step 2: Retrieve contexts for each sub-query
+        all_contexts = set()  # Use a set to store unique contexts
+        for sub_query in sub_queries:
+            contexts = self.retrieve_contexts(sub_query)
+            all_contexts.update(contexts)  # Add contexts to the set
+
+        # Step 3: Combine all contexts into a single string
+        combined_context = "\n\n".join(all_contexts)
+
+        # Step 4: Pass the combined context and original query to the LLM
+        print(f"[LLM Chain] Calling with queries: {sub_queries}")
+        result = self.llm_chain.run(
+            context=combined_context, question=query_text, return_only_outputs=True
+        )
+        print(f"[LLM Chain] |___Response: {result}")
+        return result
