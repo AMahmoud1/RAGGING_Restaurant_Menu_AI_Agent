@@ -45,6 +45,9 @@ class AI_Agent:
         # Create decompose chain
         self.decompose_chain = self.decompose_chain_creation(self.decompose_llm)
 
+        # Create llm chain
+        self.llm_chain = self.llm_chain_creation(self.response_llm)
+
     def load_documents(self, path):
         """
         Load the PDF document and return the number of pages.
@@ -160,6 +163,42 @@ class AI_Agent:
             llm=llm, prompt=DECOMPOSE_PROMPT, callbacks=None, verbose=False
         )
         return decompose_chain
+
+    def llm_chain_creation(self, llm):
+        """
+        Function to create the LLM chain for generating responses.
+
+        Arguments:
+            llm: The LLM model object
+
+        Returns:
+            llm_chain: The LLM chain object
+        """
+        # Prompt for generating responses based on the context and question
+        prompt = """
+        You are an expert in retrieval-augmented generation (RAG) for restaurant recommendations and nutrition analysis.  
+        Provide a **short and precise** response to the user's query based solely on the provided context, including menu items, nutritional databases, and calorie information.  
+
+        1. Use the following pieces of context to answer the question at the end.  
+        2. **Do not include external knowledge**, only use the provided menu details, nutrition databases, and available dietary information.  
+        3. **Summarize the information** clearly and reference specific dishes or ingredients when applicable.  
+        4. If the context does not provide an answer, explicitly state: "I don't have enough information."  
+        5. Keep the answer crisp and limited to 3-4 sentences.  
+        6. Provide a concise and helpful response. If not enough information is available, explicitly state so.  
+
+        \n\n**Context:** {context}  
+
+        \n\n**Question:** {question}  
+
+        **Helpful Answer:**  
+        """
+
+        QA_CHAIN_PROMPT = PromptTemplate.from_template(prompt)
+
+        llm_chain = LLMChain(
+            llm=llm, prompt=QA_CHAIN_PROMPT, callbacks=None, verbose=False
+        )
+        return llm_chain
 
     def infer(self, query_text):
         pass
