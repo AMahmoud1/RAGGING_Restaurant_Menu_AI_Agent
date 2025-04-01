@@ -4,7 +4,7 @@ import os
 import streamlit as st
 import torch
 
-from ai_agent import AI_Agent
+from src.ai_agent import AI_Agent
 
 st.set_page_config(page_title="Restaurant AI Agent", page_icon="📖")
 st.title("Talk to an AI Agent about your favorite meal 🍔🍕🍣")
