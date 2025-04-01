@@ -25,10 +25,10 @@ def arguments_parser():
     parser.add_argument(
         "llm_model", type=str, help="LLM model name (e.g., deepseek-r1:7b)"
     )
-    parser.add_argument("pdf_path", type=str, help="Path to Esbaar Handbook PDF")
+    parser.add_argument("pdf_path", type=str, help="Path to Restaurant Menu PDF")
     parser.add_argument(
         "fiass_index_path", type=str, help="Path to FIASS index database"
-    )
+    )  
     parser.add_argument("faiss_k", type=int, help="Number of chunks returned by FAISS")
     parser.add_argument(
         "num_queries", type=int, help="Number of chunks returned by FAISS"
